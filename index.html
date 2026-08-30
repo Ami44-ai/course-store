@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة الكورسات الرقمية</title>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --bg-color: #F9FAFB;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--card-bg);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 20px 40px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 24px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .hero h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .course-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+        .course-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+        .course-desc {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #E5E7EB;
+            padding-top: 15px;
+        }
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #059669;
+        }
+        .btn-buy {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        .btn-buy:hover {
+            background-color: var(--primary-hover);
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 50px;
+            border-top: 1px solid #E5E7EB;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>منصتي الرقمية</h1>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h2>طور مهاراتك اليوم</h2>
+            <p>اختر من بين مجموعة من الكورسات الاحترافية المصممة لمساعدتك على النجاح أونلاين.</p>
+        </div>
+
+        <div class="courses-grid">
+            {% for course in courses %}
+            <div class="course-card">
+                <div>
+                    <div class="course-title">{{ course.title }}</div>
+                    <div class="course-desc">{{ course.description }}</div>
+                </div>
+                <div class="course-footer">
+                    <span class="price">{{ course.price }}</span>
+                    <a href="{{ course.checkout_url }}" class="btn-buy" target="_blank">اشتري الآن</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer>
+        جميع الحقوق محفوظة &copy; 2026
+    </footer>
+
+</body>
+</html>
