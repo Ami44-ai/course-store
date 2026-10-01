@@ -48,6 +48,57 @@
             color: var(--text-muted);
             font-size: 16px;
         }
+        .tool-box {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            max-width: 680px;
+            margin: 0 auto 30px;
+            padding: 24px;
+        }
+        .tool-box h3 {
+            margin-top: 0;
+            margin-bottom: 14px;
+            font-size: 22px;
+        }
+        .tool-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+        .tool-form input {
+            flex: 1 1 260px;
+            padding: 12px 14px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .tool-form button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .tool-form button:hover {
+            background-color: var(--primary-hover);
+        }
+        .result {
+            margin-top: 16px;
+            min-height: 24px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .result.error {
+            color: #B91C1C;
+        }
+        .result.success {
+            color: #047857;
+        }
         .courses-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -125,6 +176,15 @@
             <p>اختر من بين مجموعة من الكورسات الاحترافية المصممة لمساعدتك على النجاح أونلاين.</p>
         </div>
 
+        <div class="tool-box">
+            <h3>فحص رقم الهاتف</h3>
+            <form class="tool-form" id="phone-check-form">
+                <input type="tel" id="phone_number" name="phone_number" placeholder="مثال: (206) 555-0100" aria-label="رقم الهاتف" required>
+                <button type="submit">فحص</button>
+            </form>
+            <div class="result" id="phone-result"> </div>
+        </div>
+
         <div class="courses-grid">
             {% for course in courses %}
             <div class="course-card">
@@ -140,6 +200,37 @@
             {% endfor %}
         </div>
     </div>
+
+    <script>
+        const form = document.getElementById('phone-check-form');
+        const result = document.getElementById('phone-result');
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const phoneNumber = document.getElementById('phone_number').value;
+
+            result.className = 'result';
+            result.textContent = 'جارٍ الفحص...';
+
+            try {
+                const response = await fetch('/api/check-phone', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ phone_number: phoneNumber })
+                });
+
+                const data = await response.json();
+                const isSuccess = data.is_registered_with_amazon;
+                result.classList.add(isSuccess ? 'success' : data.is_valid_us_number ? 'error' : 'error');
+                result.textContent = data.message || 'حدث خطأ غير متوقع.';
+            } catch (error) {
+                result.classList.add('error');
+                result.textContent = 'تعذر الاتصال بالخادم.';
+            }
+        });
+    </script>
 
     <footer>
         جميع الحقوق محفوظة &copy; 2026
